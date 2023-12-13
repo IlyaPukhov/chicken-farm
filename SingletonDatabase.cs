@@ -8,7 +8,7 @@ namespace ChickenFarm
     {
         private static SingletonDatabase? instance;
         private readonly ApplicationContext _dbContext;
-        private List<IDbObserver> _observers;
+        private List<IDatabaseObserver> _observers;
 
         private SingletonDatabase()
         {
@@ -22,12 +22,12 @@ namespace ChickenFarm
             return instance;
         }
 
-        public void AddObserver(IDbObserver observer)
+        public void AddObserver(IDatabaseObserver observer)
         {
             _observers.Add(observer);
         }
 
-        public void RemoveObserver(IDbObserver observer)
+        public void RemoveObserver(IDatabaseObserver observer)
         {
             _observers.Remove(observer);
         }

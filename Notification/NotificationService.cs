@@ -2,7 +2,7 @@
 
 namespace ChickenFarm.Notification
 {
-    public class NotificationService : IDbObserver
+    public class NotificationService : IDatabaseObserver
     {
 
         public void UpdateNotify(Chicken chicken)
