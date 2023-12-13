@@ -1,9 +1,7 @@
-﻿using ChickenFarm.Models;
-
-namespace ChickenFarm.Notification
+﻿namespace ChickenFarm.Notification
 {
     public interface IDatabaseObserver
     {
-        void UpdateNotify(Chicken chicken);
+        void Notify(string message);
     }
 }

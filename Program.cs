@@ -8,8 +8,8 @@ namespace ChickenFarm
         public static void Main()
         {
             SingletonDatabase db = SingletonDatabase.GetInstance();
-            NotificationService notificationService = new();
-            db.AddObserver(notificationService);
+            IDatabaseObserver emailNotification = new EmailNotification();
+            db.AddObserver(emailNotification);
 
             db.UpdateChicken(new Chicken
             {
@@ -19,8 +19,22 @@ namespace ChickenFarm
                 Breed = new Breed { Diet = 3 },
                 Efficiency = 12
             });
+            db.RemoveObserver(emailNotification);
 
-            db.RemoveObserver(notificationService);
+            Console.WriteLine("---------- Замена нотифаера ----------");
+
+            IDatabaseObserver emailSmsNotification = new SmsNotificationDecorator(emailNotification);
+            db.AddObserver(emailSmsNotification);
+
+            db.AddChicken(new Chicken
+            {
+                Weight = 4,
+                Position = new Cell { Department = 1, Row = 2, Position = 8 },
+                Breed = new Breed { Diet = 4 },
+                Efficiency = 8
+            });
+
+            db.RemoveObserver(emailSmsNotification);
         }
     }
 }

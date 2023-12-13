@@ -35,7 +35,7 @@ namespace ChickenFarm
         {
             foreach (var observer in _observers)
             {
-                observer.UpdateNotify(chicken);
+                observer.Notify($"Уведомление: Курочка из клетки {chicken.Position.GetString()} была обновлена!");
             }
         }
 
