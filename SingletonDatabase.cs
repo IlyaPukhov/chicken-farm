@@ -1,6 +1,5 @@
 ﻿using ChickenFarm.Models;
 using ChickenFarm.Notification;
-using Microsoft.EntityFrameworkCore;
 
 namespace ChickenFarm
 {
@@ -8,7 +7,7 @@ namespace ChickenFarm
     {
         private static SingletonDatabase? instance;
         private readonly ApplicationContext _dbContext;
-        private List<IDatabaseObserver> _observers;
+        private readonly List<IDatabaseObserver> _observers;
 
         private SingletonDatabase()
         {
