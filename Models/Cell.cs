@@ -9,5 +9,7 @@
         public int Row { get; set; }
 
         public int Position { get; set; }
+
+        public string GetString() => $"{Department}-{Row}-{Position}";
     }
 }

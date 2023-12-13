@@ -1,4 +1,5 @@
 ﻿using ChickenFarm.Models;
+using ChickenFarm.Notification;
 using Microsoft.EntityFrameworkCore;
 
 namespace ChickenFarm
@@ -7,10 +8,11 @@ namespace ChickenFarm
     {
         private static SingletonDatabase? instance;
         private readonly ApplicationContext _dbContext;
-
+        private List<IDbObserver> _observers;
 
         private SingletonDatabase()
         {
+            _observers = [];
             _dbContext = new ApplicationContext();
         }
 
@@ -18,6 +20,24 @@ namespace ChickenFarm
         {
             instance ??= new SingletonDatabase();
             return instance;
+        }
+
+        public void AddObserver(IDbObserver observer)
+        {
+            _observers.Add(observer);
+        }
+
+        public void RemoveObserver(IDbObserver observer)
+        {
+            _observers.Remove(observer);
+        }
+
+        private void Notify(Chicken chicken)
+        {
+            foreach (var observer in _observers)
+            {
+                observer.UpdateNotify(chicken);
+            }
         }
 
         public void AddEmployee(Employee employee)
@@ -42,18 +62,24 @@ namespace ChickenFarm
         {
             _dbContext.Add(chicken);
             _dbContext.SaveChanges();
+
+            Notify(chicken);
         }
 
         public void RemoveChicken(Chicken chicken)
         {
             _dbContext.Remove(chicken);
             _dbContext.SaveChanges();
+
+            Notify(chicken);
         }
 
         public void UpdateChicken(Chicken chicken)
         {
             _dbContext.Update(chicken);
             _dbContext.SaveChanges();
+
+            Notify(chicken);
         }
 
         public void AddBreed(Breed breed)
